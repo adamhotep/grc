@@ -1,0 +1,54 @@
+# vim:set syn=grc:
+
+# Keywords
+regexp="([^"]*(?:(?<!\\)(?:\\\\)*\\")*)"(?=[\s\r\n]*:)
+colours=unchanged,bold blue
+=======
+
+# Numbers (including scientific notation)
+regexp=(?<![\S"])(-?(?=[.0-9])[0-9]*\.?[0-9]*(?:[eE][-+]?[0-9]+)?)(?![\w"])
+colours=unchanged,yellow
+=======
+
+# Booleans and null
+regexp=(?<!-)(?:true|false|null)(?![\s\r\n]*")
+colours=yellow
+=======
+
+# Open braces
+regexp=(?:^|[,:])\s*([\[{](?:[\[{\]}\s]*[\[\]{}])?)
+colours=unchanged,bold magenta
+=======
+# Close braces
+#regexp=([\]}](?:\s*[\]}]+)?)(?=,|\z)
+regexp=([\]}](?:\s*[\]}]+)?)(?![\s\r\n]+")
+colours=unchanged,bold magenta
+=======
+
+# Function start
+regexp=\A[\s\r\n]*[a-zA-Z$][$\w\xA0-\xFF]*[\s\r\n]*\(
+colours=bold magenta
+=======
+# Function end
+regexp=\);?[\s\r\n]*\Z
+colours=bold magenta
+=======
+
+# String values that START lines
+regexp=^\s*"((?:[^"]*(?<!\\)(?:\\\\)*\\")*[^"]*)(?<!\\)(?:\\\\)*"(?![^\[{,:]*[\[{:])
+colours=unchanged,yellow
+=======
+# String values that CONTINUE lines
+regexp=(?<=[\[:,])[\s\r\n]*"((?:[^"]*(?<!\\)(?:\\\\)*\\")*[^"]*)(?<!\\)(?:\\\\)*"
+colours=unchanged,yellow
+=======
+# Escapes inside strings
+#regexp=:[\s\r\n]*"(?:[^"]*(?<!\\)(?:\\\\)*\\")*[^"]*?(\\["\\/bfnrt])
+#colours=unchanged,red
+regexp=\\["\\/bfnrt]
+colours=red
+
+=======
+# Invalid Escapes
+regexp=\\[^"\\/bfnrt]
+colours=white on_red
