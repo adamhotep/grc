@@ -1,69 +1,52 @@
-# starting Nmap
-regexp=^Starting Nmap.*$
+# Starting Nmap / please report
+regexp=^(?:Starting Nmap|.*\bPlease report\s.*\bnmap\.org\b).*$
 colours=bold black
-======
-# ip address
-regexp=\b(?:[01]?\d\d?|2[0-4]\d|25[0-5])(?:\.[01]?\d\d?|2[0-4]\d|25[0-5]){3}\b
-colours=magenta
-======
-# hostname
-regexp=\s(\w[\w.-]*\w) \((?:(?:[01]?\d\d?|2[0-4]\d|25[0-5])(?:\.[01]?\d\d?|2[0-4]\d|25[0-5]){3}\b|not scanned)
-colours=unchanged,bold yellow
-count=once
-======
-# list header
-#regexp=\b(?:PORT|STATE|SERVICE|REASON|VERSION)\b
-regexp=^PORT\s.*$
+-
+# Scan Title
+regexp=Nmap scan report for (\S+)\s\(([^\)]+)\)
+colours=default,bold green, bold magenta
+-
+# up
+regexp=Host is (up)
+colours=default, bold green
+-
+# Failed to resolve
+regexp=Failed\sto\sresolve\s\"(\S+)\"
+colours=red,bold red
+-
+# Closed ports
+regexp=Not shown: (\d+)\s(closed|filtered)\sports
+colours=default,bright_red,red
+-
+# Titles
+regexp=^PORT.*$|^HOP.*
 colours=reverse
-======
-# open
-regexp=\bopen\b
-colours=dark green
-count=once
-======
-# filtered
-regexp=\bfiltered\b
-colours=dark yellow
-count=once
-======
-# closed
-regexp=\bclosed\b(?! ports)
-colours= dark red
-count=once
-======
-# tcp n udp
-regexp=/(?:tcp|udp)\b
-colours=bold black
-count=once
-======
-# device type
-regexp=\bDevice type:
-colours=cyan
-======
-# running
-regexp=\bRunning\b:?
-colours=cyan
-======
-# os details
-regexp=\bOS details:
-colours=cyan
-======
-# MAC
-regexp=\bMAC Address:
-colours=cyan
-======
-# network distance
-regexp=\bNetwork Distance:
-colours=cyan
-======
-# Service Info
-regexp=\bService Info:
-colours=cyan
-======
-# Agressive
-regexp=\bAggressive OS guesses:
-colours=cyan
-======
-# no exact match
-regexp=\bNo exact OS matches for host\b
+-
+# Port, State, Service
+regexp=^(\d+)\/(?:(tcp)|(\w+))\s+(?:(open)|(closed)|(filtered)|\w+)\s+((?!unknown\b)[^\s?]+)?(\?\S*|unknown\b)?
+#colours=default,bold green,bold black,magenta,green,red,yellow,default,bold yellow
+colours=default,default,bold black,magenta,green,red,yellow,default,bold yellow
+-
+# Ports Details
+regexp=^\|_?(.*)
+colours=bold green,default
+-
+# Trace
+regexp=^\d+\s+(\d+\.\d+\sms)\b
+colours=default,green
+-
+# IPv4 Address
+regexp=\b(?<!\.)(?:1?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:1?\d\d?|2[0-4]\d|25[0-5])){3}\b(?![.-])
 colours=magenta
+-
+# Network Distance:
+regexp=Network Distance:\s(\d+)
+colours=default,bold green
+-
+# Various titles
+regexp=^(?!Not shown:|Nmap done:)([A-Z]\w+ \w+(?: \w+)?|Running \([^\)]+\)):
+colours=default,cyan
+-
+# Warning
+regexp=^Warning(?=:)
+colours=bold red
