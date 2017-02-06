@@ -20,7 +20,7 @@ regexp=(\w+_u):(\w+_r):(\w+_t):(\w\d)
 colours=default,green,yellow,cyan,magenta
 -
 # Permissions rainbow: drwxrwxrwx is divided as (d)(rwx)(rwx)(rwx)
-# with (blue)(green)(yellow)(red) for (type)(owner)(group)(other)
+# with (bold white)(green)(yellow)(red) for (type)(owner)(group)(other)
 # Dashes are intentionally left without color
 # Bold is used for nonstandard executable bits (s,S,t,T rather than x)
 regexp=^(?:-|([bcCdDlMnpPs?]))(?:-|(r))(?:-|(w))(?:-|(x)|(\w))(?:-|(r))(?:-|(w))(?:-|(x)|(\w))(?:-|(r))(?:-|(w))(?:-|(x)|(\w))(?=[\s,]|$)
