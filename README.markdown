@@ -180,14 +180,16 @@ or, if you have recent BSD tail:
 
 If you want to start using grc automatically with supported commands, add
 
-    source /etc/grc.bashrc
+    source /etc/profile.d/grc.bashrc
 
 To set aliases for supported commands, append to your `~/.bashrc`:
-    [[ -s "/etc/grc.bashrc" ]] && source /etc/grc.bashrc
+
+    [[ -s "/etc/profile.d/grc.bashrc" ]] && source /etc/profile.d/grc.bashrc
 
 Or for zsh users, append to `~/.zshrc`:
-    [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
 
-(assuming you copied `grc.bashrc` and `grc.zsh` to `/etc`)
+    [[ -s "/etc/profile.d/grc.zsh" ]] && source /etc/profile.d/grc.zsh
+
+(assuming you copied `grc.bashrc` and `grc.zsh` to `/etc/profile.d`)
 
 
