@@ -1,37 +1,48 @@
-GRC="$(type -p grc)"
-if [ "$TERM" != dumb ] && [ -n "$GRC" ]; then
-    alias colourify="$GRC -es --colour=auto"
-    alias blkid='colourify blkid'
-    alias configure='colourify ./configure'
-    alias df='colourify df'
-    alias diff='colourify diff'
-    alias docker='colourify docker'
-    alias docker-machine='colourify docker-machine'
-    alias du='colourify du'
-    alias env='colourify env'
-    alias free='colourify free'
-    alias make='colourify make'
-    alias gcc='colourify gcc'
-    alias g++='colourify g++'
-    alias ip='colourify ip'
-    alias iptables='colourify iptables'
-    alias as='colourify as'
-    alias gas='colourify gas'
-    alias ld='colourify ld'
-    alias ls='colourify ls --color'
-    alias lsblk='colourify lsblk'
-    alias lspci='colourify lspci'
-    alias netstat='colourify netstat'
-    alias ping='colourify ping'
-    alias traceroute='colourify traceroute'
-    alias traceroute6='colourify traceroute6'
-    alias head='colourify head'
-    alias tail='colourify tail'
-    alias dig='colourify dig'
-    alias mount='colourify mount'
-    alias ps='colourify ps'
-    alias mtr='colourify mtr'
-    alias semanage='colourify semanage'
-    alias getsebool='colourify setsebool'
-    alias ifconfig='colourify ifconfig'
+# vim:syn=sh:
+GRC="$(command -v grc)"
+if [ "$TERM" != dumb ] && [ -x "$GRC" ]; then
+
+  colourify() {
+    if [ -t 1 ] || [ -n "$CLICOLOR_FORCE" ]; then
+      $GRC -es --colour=auto "$@"
+    else
+      "$@"
+    fi
+  }
+
+  # assign the grc colours to the given command if it exists
+  # Usage: _grc_assign COMMAND [ASSIGNMENT]
+  _grc_assign() {
+    local cmd="$1"
+    if [ "$#" -gt 1 ]; then
+      shift
+    fi
+    if command -v "$cmd" >/dev/null 2>&1; then
+      alias "$cmd"="colourify $*"
+    fi
+  }
+
+  # Here is the list of commands mapped to themselves without options
+  for cmd in ant as blkid cc cvs c++ df diff dig dnf \
+             docker docker-compose docker-machine \
+             du env free gas gcc getfacl getsebool g++ gmake \
+             hd head hexdump ifconfig ioping iostat ip iptables \
+             journalctl last ld ldap lsattr lsblk lsmod lspci \
+             make mount mtr mvn netstat nmap oping ping ping6 \
+             ps sar semanage setsebool showmount ss stat \
+             sysctl systemctl tail tcpdump traceroute traceroute6 \
+             tune2fs ulimit uptime vmstat w who wdiff
+  do
+    _grc_assign "$cmd"
+  done
+
+  # Individual commands that need extra help or options
+  _grc_assign ls 'ls --color=auto'
+  _grc_assign getsebool setsebool
+
+  # This command needs run-time detection
+  alias configure='[ -x ./configure ] && colourify ./configure'
+
+  # Clean up variables
+  unset cmd
 fi

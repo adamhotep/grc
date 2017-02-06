@@ -25,5 +25,5 @@ cp -fv grcat.1 $MANDIR/man1
 mkdir -p $CONFDIR
 cp -fv grc.conf $CONFDIR
 mkdir -p $PROFILEDIR
-cp -fv grc.bashrc $PROFILEDIR
+cp -fv grc.bashrc grc.zsh $PROFILEDIR
 
