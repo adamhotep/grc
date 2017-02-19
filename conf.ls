@@ -19,13 +19,9 @@ colours=unchanged,bold red,bold red
 regexp=(\w+_u):(\w+_r):(\w+_t):(\w\d)
 colours=default,green,yellow,cyan,magenta
 -
-# Permissions rainbow: drwxrwxrwx is divided as (d)(rwx)(rwx)(rwx)
-# with (bold white)(green)(yellow)(red) for (type)(owner)(group)(other)
+# Permissions rainbow: drwxrwxrwx is divided as (d)(rwx)(rwx)(rwx)(+)
+# with (bold white)(green)(yellow)(red)(cyan) = (type)(owner)(group)(other)(ACL)
 # Dashes are intentionally left without color
 # Bold is used for nonstandard executable bits (s,S,t,T rather than x)
-regexp=^(?:-|([bcCdDlMnpPs?]))(?:-|(r))(?:-|(w))(?:-|(x)|(\w))(?:-|(r))(?:-|(w))(?:-|(x)|(\w))(?:-|(r))(?:-|(w))(?:-|(x)|(\w))(?=[\s,]|$)
-colours=unchanged,bold white,bright_green,bright_green,bright_green,bold green,yellow,yellow,yellow,bold yellow,bright_red,bright_red,bright_red,bold red
--
-# ACL
-regexp=^\S{10}(\+)
-colours=unchanged,on_cyan bold white
+regexp=^(?:-|([bcCdDlMnpPs?]))(?:-|(r))(?:-|(w))(?:-|(x)|(\w))(?:-|(r))(?:-|(w))(?:-|(x)|(\w))(?:-|(r))(?:-|(w))(?:-|(x)|(\w))(\+)?(?=[\s,]|$)
+colours=unchanged,bold white,bright_green,bright_green,bright_green,bold green,yellow,yellow,yellow,bold yellow,bright_red,bright_red,bright_red,bold red,on_cyan black
