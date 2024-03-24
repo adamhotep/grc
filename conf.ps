@@ -10,9 +10,13 @@ colours=underline
 regexp=^([A-Z][-a-z0-9]+(\s+|$)){3,}$
 colours=underline
 =======
-# VMSTAT
-regexp=(\s|^)\d+([.,]\d+)?(?=[\s,]|$)
+# VMSTAT (with an exclusion for dates)
+regexp=(\s|^)(?!(?<=[JFMASOND][aepuco][nbrynlgptvc]\s)[0-3]\d\b)\d+([.,]\d+)?(?=[\s,])
 colours=bright_green
+=======
+# Zero-padding in times
+regexp=(?:\s|^)(?:0(?=[1-9]:[0-6]\d:)|(?:00:){1,2}(?:0(?=\d(?![^:\s])))?)
+colours=bright_black
 =======
 # PID
 regexp=^[a-zA-Z]+\w+\s+(\d+)|^\d\s+\w\s+(?:\w+\s+)?(\d+)|^\s*(\d+)
@@ -32,7 +36,7 @@ colours=yellow
 =======
 # --long-option=
 # legacy: regexp=(?<=\s)--[-\w\d]+[\w\d](?==|\s|$)(=?)
-regexp=(?<=\s)--[-\w\d]+[\w\d](?==|\s|$)(=|\s)?(?!--)([^\s]*)
+regexp=(?<=\s)--[-\w\d]+[\w\d](?==|\s|$)(=|\s)?(?!-)([^\s]*)
 colours=cyan,white,underline cyan
 =======
 # [text]
