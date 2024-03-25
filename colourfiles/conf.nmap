@@ -1,3 +1,7 @@
+# Starting Nmap / please report
+regexp=^(?:Starting Nmap|.*\bPlease report\s.*\bnmap\.org\b).*$
+colours=bold black
+-
 # Scan Title
 regexp=Nmap scan report for (\S+)\s\(([^\)]+)\)
 colours=default,bold green, bold magenta
@@ -27,9 +31,17 @@ regexp=^\|_?(.*)
 colours=bold green,default
 -
 # Trace
-regexp=^\d+\s+(\d+\.\d+\sms)[^0-9]*(\d+\.\d+\.\d+\.\d+)
-colours=default,green,magenta
+regexp=^\d+\s+(\d+\.\d+\sms)\b
+colours=default,green
+-
+# IPv4 Address
+regexp=\b(?<!\.)(?:1?\d\d?|2[0-4]\d|25[0-5])(?:\.(?:1?\d\d?|2[0-4]\d|25[0-5])){3}\b(?![.-])
+colours=magenta
 -
 # Network Distance:
 regexp=Network Distance:\s(\d+)
 colours=default,bold green
+-
+# Various titles
+regexp=^(?!Not shown:|Nmap done:)([A-Z]\w+ \w+(?: \w+)?|Running \([^\)]+\)):
+colours=default,cyan

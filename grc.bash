@@ -1,12 +1,12 @@
-if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
-  # Prevent grc aliases from overriding zsh completions.
-  setopt COMPLETE_ALIASES
+# vim:syn=sh:
+GRC="$(command -v grc)"
+if [[ "$TERM" != dumb ]] && [[ -x "$GRC" ]]; then
 
   colourify() {
     if [[ -t 1 ]]; then
-      $commands[grc] -es --colour=auto "$@"
+      "$GRC" -es --colour=auto "$@"
     elif [[ "$CLICOLOR_FORCE$*" != "${*#*--color=always}" ]]; then
-      $commands[grc] -es --colour=on "$@"
+      "$GRC" -es --colour=on "$@"
     else
       "$@"
     fi
@@ -19,7 +19,7 @@ if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
     if [[ "$#" -gt 1 ]]; then
       shift
     fi
-    if (( $+commands[$cmd] )); then
+    if command -v "$cmd" >/dev/null 2>&1; then
       alias "$cmd"="colourify $*"
     fi
   }
@@ -45,21 +45,25 @@ if [[ "$TERM" != dumb ]] && (( $+commands[grc] )) ; then
   # and let manual invocations of  ls -l  go without the extra GRC coloring.
   # Consider  alias ll='ll -ph'  but watch out for overriding  alias  ll='ls -l'
   if ls -ld --color=always / >/dev/null 2>&1; then GNU_LS="--color=always"; fi
-  unalias ll 2>/dev/null
-  unfunction ll 2>/dev/null
-  function ll() { # space is absolutely needed between ll and () ... right?
+  function ll() {
     if [[ -t 1 ]] || [[ -n "$CLICOLOR_FORCE" ]]
       then colourify ls -l $GNU_LS "$@"
       else ls -l "$@"
     fi
   }
+  ALIAS_LS="$(alias ls 2>/dev/null || echo "alias ls='ls -h'")"
+  ALIAS_LS_CMD="${ALIAS_LS#*\'ls}"
+  if [ "$ALIAS_LS" != "$ALIAS_LS_CMD" ]; then
+    ALIAS_LS_CMD="${ALIAS_LS_CMD%%\'*}"
+    alias ll="ll $ALIAS_LS_CMD"
+  fi
 
   # This needs run-time detection. We even fake the 'command not found' error.
   configure() {
     if [[ -x ./configure ]]; then
       colourify ./configure "$@"
     else
-      echo "zsh: command not found: configure" >&2
+      echo "configure: command not found" >&2
       return 127
     fi
   }
