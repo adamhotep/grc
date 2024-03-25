@@ -1,7 +1,6 @@
 # Generic Colouriser
 
-Radovan Garabík  http://kassiopeia.juls.savba.sk/~garabik/software/grc.html
-garabik @ kassiopeia.juls.savba.sk
+Radovan Garabík  <http://kassiopeia.juls.savba.sk/~garabik/software/grc.html> (garabik @ kassiopeia.juls.savba.sk)
 
 For the impatient - try following commands:
 
@@ -130,7 +129,7 @@ in your `/etc/grc.conf`, then typing `grc cat /var/log/syslog` will use `conf.lo
 ## Miscellaneous remarks:
 
 You should get yourself familiar with regular expressions. Good reading is
-at http://docs.python.org/dev/howto/regex.html
+at <http://docs.python.org/dev/howto/regex.html>
 
 The program is not yet optimized for speed. There are places that can
 give a big boost if optimized.
@@ -162,9 +161,9 @@ there can be more attributes per line (separated by space), e.g.
 
 will display pathnames in bold blinking green
 
-## Python 3 compatibility
+## Python 2 & 3 compatibility
 
-There is some preliminary python3 support, meaning that both grc and grcat will run under both python2 and python3. However, all the regular expressions are strings, and grcat works on string input (not bytes).  Therefore it will miserably fail if fed input with invalid UTF-8 characters.
+both grc and grcat are targetted towards python3 now; there is an attempt at python2 compatibility, meaning that both grc and grcat will run under both python2 and python3. However, all the regular expressions are strings, and grcat works on string input (not bytes).
 
 ## Hints
 
@@ -178,18 +177,36 @@ or, if you have recent BSD tail:
 
     tail -F /var/log/syslog | grcat conf.log >/dev/tty12
 
-If you want to start using grc automatically with supported commands, add
+## Automatic aliases
 
-    source /etc/profile.d/grc.bashrc
+You can start using grc automatically with supported commands. The following assumes that `grc.<sh|zsh|fish>` is in `/etc`. The location may differ (i. e. `/usr/local/etc` when installed with [homebrew](https://formulae.brew.sh/formula/grc)); or the `grc.sh` can be placed into `/etc/profile.d/` (this is in fact the default). Be aware this is somewhat invasive and better test it before deploying.
+
+### Bash
 
 To set aliases for supported commands, append to your `~/.bashrc`:
 
-    [[ -s "/etc/profile.d/grc.bashrc" ]] && source /etc/profile.d/grc.bashrc
+    GRC_ALIASES=true
+    [[ -s "/etc/profile.d/grc.sh" ]] && source /etc/grc.sh
+
+If the file `/etc/default/grc` exists, it is sourced first, therefore you can place a line saying `GRC_ALIASES=true` there.
+
+### ZSH
 
 Or for zsh users, append to `~/.zshrc`:
 
-    [[ -s "/etc/profile.d/grc.zsh" ]] && source /etc/profile.d/grc.zsh
+    [[ -s "/etc/grc.zsh" ]] && source /etc/grc.zsh
 
-(assuming you copied `grc.bashrc` and `grc.zsh` to `/etc/profile.d`)
+### Fish
 
+Add to `~/.config/fish/config.fish` or in a new file in `~/.config/fish/conf.d/`:
 
+    source /usr/local/etc/grc.fish
+
+## Dynamic aliases
+
+By running the follow code, it will check to see what programs are already installed on your OS (based on your `$PATH`), and echo out the result.  This could then be added to your shell resource file as a one off.  Alternatively, by removing the `echo` in the code, it could be placed into your shell resource file directly, and it will create the necessarily aliases each time:
+
+    for cmd in g++ gas head make ld ping6 tail traceroute6 $( ls /usr/share/grc/ ); do
+      cmd="${cmd##*conf.}"
+      type "${cmd}" >/dev/null 2>&1 && echo alias "${cmd}"="$( which grc ) --colour=auto ${cmd}"
+    done

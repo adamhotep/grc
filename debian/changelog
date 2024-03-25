@@ -1,3 +1,69 @@
+grc (1.13.1-1) unstable; urgency=low
+
+  * fix `ip addr` broadcast colouring
+
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Sun, 22 Aug 2021 13:36:39 +0200
+
+grc (1.13-2) unstable; urgency=medium
+
+  * Source only upload (closes: #983793)
+
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Fri, 20 Aug 2021 16:38:48 +0200
+
+grc (1.13-1) unstable; urgency=low
+
+  * do not add sh aliases unless explicitly allowed in /etc/default/grc
+    (closes: #984629)
+  * several minor improvements
+
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Sat, 07 Aug 2021 17:37:55 +0200
+
+grc (1.12-1) unstable; urgency=low
+
+  * add new configurations
+  * improved zsh alias support
+  * various small bugfixes and improvements
+
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Mon, 01 Mar 2021 09:41:35 +0100
+
+grc (1.11.3-1) unstable; urgency=medium
+
+  * add new configurations
+  * --colour=auto is now the default
+  * add dh-python build dependency (closes: #896743)
+
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Sun, 29 Apr 2018 16:12:14 +0200
+
+grc (1.11.2-1) unstable; urgency=low
+
+  * add ntpdate configuration command
+
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Sat, 23 Sep 2017 20:35:33 +0200
+
+grc (1.11.1-2) unstable; urgency=low
+
+  * fixed python2 compatibility errors (forgotten old changelog commit)
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Wed, 07 Jun 2017 15:01:11 +0200
+
+grc (1.11.1-1) unstable; urgency=low
+
+  * fixed python2 compatibility errors
+
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Sun, 21 May 2017 16:01:51 +0200
+
+grc (1.11-1) unstable; urgency=low
+
+  * clean up directories
+  * improve some configuration files
+
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Fri, 21 Apr 2017 11:06:13 +0200
+
+grc (1.10.1-1) unstable; urgency=low
+
+  * make aliases more compatible with zsh anc MacOSX
+
+ -- Radovan Garabík <garabik@kassiopeia.juls.savba.sk>  Sat, 04 Mar 2017 10:04:12 +0100
+
 grc (1.10-1) unstable; urgency=low
 
   * many configuration files added

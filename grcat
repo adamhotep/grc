@@ -4,6 +4,34 @@ from __future__ import print_function
 
 import sys, os, string, re, signal, errno
 
+
+# redefine readline to pass invalidly encoded characters unchanged, if possible
+if hasattr(sys.stdin, 'reconfigure') and hasattr(sys.stdout, 'reconfigure'):
+    # at least python3.7
+    sys.stdin.reconfigure(errors='surrogateescape')
+    sys.stdout.reconfigure(errors='surrogateescape')
+    myreadline = sys.stdin.readline
+    myprint = print
+else:
+    if hasattr(sys.stdin, 'buffer'):
+        # python3
+        buffer_reader = sys.stdin.buffer
+    else:
+        buffer_reader = sys.stdin
+    def myreadline():
+        for line in buffer_reader:
+            try:
+                decoded = line.decode('utf-8', errors='surrogateescape')
+            except (UnicodeDecodeError, LookupError):
+                decoded = line.decode('utf-8', errors='ignore')
+            return decoded
+        return ''
+    def myprint(x):
+        try:
+            print(x)
+        except UnicodeEncodeError:
+            print(x.encode('utf-8', errors='replace').decode('utf-8'))
+
 #some default definitions
 colours = {
             'none'       :    "",
@@ -135,7 +163,7 @@ while not is_last:
             continue
         if not l[0] in letters:
             break
-        fields = split(l[:-1], "=", 1)
+        fields = split(l.rstrip('\r\n'), "=", 1)
         if len(fields) != 2:
             sys.stderr.write('Error in configuration, I expect keyword=value line\n')
             sys.stderr.write('But I got instead:\n')
@@ -175,9 +203,9 @@ while not is_last:
 prevcolour = colours['default']
 prevcount = "more"
 blockflag = 0
-freadline = sys.stdin.readline
+
 while 1:
-    line = freadline()
+    line = myreadline()
     if line == "" :
         break
     if line[-1] in '\r\n':
@@ -187,14 +215,15 @@ while 1:
     for pattern in regexplist:
         pos = 0
         currcount = pattern['count']
+        was_replace = 0 # watch replacements, replace regexp only one per line, to avoid infinte loops if the replacement matches the regexp again
         while 1:
             m = pattern['regexp'](line, pos)
             if m:
                 if 'replace' in pattern:
+                    if was_replace:
+                        break
                     line = re.sub(m.re, pattern['replace'], line)
-                    #m = pattern['regexp'](line, pos)
-                    #if not m:
-                    #    break
+                    was_replace = 1
                 if 'colours' in pattern:
                     if currcount == "block":
                         blockflag = 1
@@ -235,7 +264,8 @@ while 1:
                     skip = pattern['skip'] in ("yes", "1", "true")
                     if 'colours' not in pattern:
                         break
-            else: break
+            else: 
+                break
         if m and currcount == "stop":
             prevcount = "stop"
             break
@@ -273,7 +303,7 @@ while 1:
                 clineprev = cline[i]
         nline = nline + colours['default']
         try:
-            print(nline)
+            myprint(nline)
         except IOError as e:
             if e.errno == errno.EPIPE:
                 break

@@ -2,32 +2,33 @@
 
 set -e
 
-PREFIX="$1"
-ETCPREFIX="$2"
-if [ -z "$PREFIX" ]; then
-  PREFIX=/usr/local
+PREFIX=${1:-/usr/local}
+ETCPREFIX=$2
+
+
+BINDIR=$PREFIX/bin
+LIBDIR=$PREFIX/share/grc
+MANDIR=$PREFIX/share/man
+CONFDIR=$ETCPREFIX/etc
+PROFILEDIR=$CONFDIR/profile.d
+
+mkdir -p $BINDIR || true
+cp -fv grc grcat $BINDIR
+mkdir -p $LIBDIR || true
+cp -fv colourfiles/conf.* $LIBDIR
+mkdir -p $MANDIR/man1
+cp -fv grc.1 $MANDIR/man1
+cp -fv grcat.1 $MANDIR/man1
+mkdir -p $CONFDIR
+cp -fv grc.conf $CONFDIR
+cp -fv grc.zsh $CONFDIR
+cp -fv grc.fish $CONFDIR
+mkdir -p $PROFILEDIR
+cp -fv grc.sh $PROFILEDIR
+
+# probably we should not install it into site-functions in a debian package...
+if [ "$PREFIX" = "/usr/local" ]; then
+  mkdir -p $PREFIX/zsh/site-functions
+  cp -fv _grc $PREFIX/zsh/site-functions
 fi
 
-
-BINDIR="$PREFIX/bin"
-LIBDIR="$PREFIX/share/grc"
-MANDIR="$PREFIX/share/man"
-CONFDIR="$ETCPREFIX/etc"
-PROFILEDIR="$CONFDIR/profile.d"
-
-_grc_install() {
-  local TARGET="$1"
-  shift
-  mkdir -p "$TARGET"
-  cp -fv "$@" "$TARGET"
-}
-
-_grc_install "$BINDIR" grc grcat
-_grc_install "$LIBDIR" conf.*
-_grc_install "$MANDIR/man1" grc.1 grcat.1
-_grc_install "$CONFDIR" grc.conf
-_grc_install "$PROFILEDIR" grc.bashrc grc.fish grc.zsh
-
-# NOTE: this does not install the vim syntax highlighting file grc.vim.
-# There does not appear to be a safe automated way to add this system-wide.
-# Instead, follow the directions in the comments at the top of the file.
