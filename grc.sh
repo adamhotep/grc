@@ -1,4 +1,4 @@
-# vim:syn=sh:
+# vim:filetype=bash:
 GRC="$(command -v grc)"
 if [[ "$TERM" != dumb ]] && [[ -x "$GRC" ]]; then
 
