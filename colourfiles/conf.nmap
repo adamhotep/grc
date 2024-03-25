@@ -20,12 +20,11 @@ colours=default,bright_red,red
 -
 # Titles
 regexp=^PORT.*$|^HOP.*
-colours=reverse
+colours=bold
 -
-# Port, State, Service
-regexp=^(\d+)\/(?:(tcp)|(\w+))\s+(?:(open)|(closed)|(filtered)|\w+)\s+((?!unknown\b)[^\s?]+)?(\?\S*|unknown\b)?
-#colours=default,bold green,bold black,magenta,green,red,yellow,default,bold yellow
-colours=default,default,bold black,magenta,green,red,yellow,default,bold yellow
+# Ports
+regexp=^(\d+)\/(\w+)\s+(\w+)\s+(\S+)
+colours=default,bold green,magenta,cyan,bold yellow
 -
 # Ports Details
 regexp=^\|_?(.*)
@@ -46,7 +45,3 @@ colours=default,bold green
 # Various titles
 regexp=^(?!Not shown:|Nmap done:)([A-Z]\w+ \w+(?: \w+)?|Running \([^\)]+\)):
 colours=default,cyan
--
-# Warning
-regexp=^Warning(?=:)
-colours=bold red
